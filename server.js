@@ -4,11 +4,12 @@ const inquirer = require('inquirer');
 const consoleTable = require('console.table');
 
 
+
 const db = mysql.createConnection(
     {
         host: 'localhost',
         user: 'root',
-        password: 'Kavi@2311',
+        password: '',
         database: 'employeeTracker'
     });
 
