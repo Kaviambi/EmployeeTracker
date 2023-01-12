@@ -26,8 +26,7 @@ CREATE TABLE employee (
     role_id INT,
     manager_id INT,
     PRIMARY KEY(id),
-    FOREIGN KEY(role_id) REFERENCES employee_role(id) ON DELETE CASCADE,
-    FOREIGN KEY (manager_id) REFERENCES employee(id) ON DELETE CASCADE
+    FOREIGN KEY(role_id) REFERENCES employee_role(id) ON DELETE CASCADE
 );
 
 
