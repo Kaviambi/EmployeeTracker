@@ -3,6 +3,8 @@ const mysql = require('mysql2');
 const inquirer = require('inquirer');
 const consoleTable = require('console.table');
 
+
+//Connection 
 const db = mysql.createConnection(
     {
         host: 'localhost',
@@ -158,11 +160,8 @@ addADepartment = () => {
     });
 };
 
-addARole = () => {
-    db.query(`SELECT * FROM department;`, (err, res) => {
-        if (err) throw err;
-        let departments = res.map(department => ({name: department.dept_name, value: department.id}));
-    
+addARole = () =>{
+
     inquirer.prompt ([
         {
             type: 'input',
@@ -177,8 +176,9 @@ addARole = () => {
         {
             type: 'input',
             name: 'department',
-            message: 'Which department do you want to add?',
-            choices: departments
+            message: 'Which department you want to add?',
+            
+           
         },
     ]).then((answers) => {
         db.query(`INSERT INTO employee_role SET ?`,
@@ -193,8 +193,7 @@ addARole = () => {
             menuPrompt();
         })
     })
-})
-};
+}
 
 addADepartment = () => {
     inquirer.prompt ([
@@ -217,8 +216,96 @@ addADepartment = () => {
 };
 
 addAnEmployee = () => {
-    
+    db.query(`SELECT * FROM employee_role;`, (err, res) => {
+        if(err) throw err;
+        roles = res.map(employee_role => ({name: employee_role.title, value: employee_role.id}));
+        
+             inquirer.prompt ([
+        {
+            name: 'firstname',
+            type: 'input',
+            message: 'What is the employee first name?'
+        },
+        {
+            name: 'lastname',
+            type: 'input',
+            message: 'What is the employee last name?'
+        },
+        {
+            name: 'emp_title',
+            type: 'input',
+            message: 'What is the employee title(role_id)?',
+            choices: roles,
+        },
+        {
+            name: 'managerId',
+            type: 'list',
+            message: 'Select a manager id?',
+            choices: [1,2,3,4]
+        }
+    ])
+    .then((answers) => {
+        db.query(`INSERT INTO employee SET ?`,
+        {
+            first_name: answers.firstname,
+            last_name: answers.lastname,
+            role_id: answers.employee_role,
+            manager_id: answers.managerId,
+        },
+        (err,res) => {
+            if(err) throw err;
+            console.log(`${res} is added to the database`);
+        menuPrompt();
+        }
+        );
+    });
+
+});
+};
+
+updateEmployeeRole = () => {
+    db.query(`SELECT * FROM employee;`, (err,res) => {
+        if(err) throw err;
+        employees = res.map(employee => ({name: employee.first_name+' '+ employee.last_name, value: employee.id}));
+
+    inquirer.prompt ([
+        {
+            type: 'list',
+            name: 'employee',
+            message: 'Which employee role you want to update?',
+            choices: employees
+         },
+         {
+            type: 'list',
+            name: 'rolechange',
+            message: 'Which role do you want to assign to the selected employee?',
+            choices: ['Sales Lead', 'Sales Person', 'Lead enginerring', 'Software Engineering', 'Lawyer', 'Account Manager'] 
+         },
+    ])
+    .then((answers) => {
+        db.query(`UPDATE employee SET ? WHERE ?`,
+        [{
+            title: answers.rolechange,
+        },
+        {
+            id: answers.employee,
+        }
+    ],
+        (err,res) => {
+            if(err) throw err;
+            console.log(`${answers.rolechange} is updated`);
+            menuPrompt();
+        })
+    })
+    })
 }
+
+
+        
+    
+
+    
+
 
 
 
