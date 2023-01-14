@@ -33,7 +33,7 @@ ACCEPTANCE CRITERIA
 MOCK-UP 
     The following video shows an example of the application being used from the command line:
 
-
+[Walkthrough Video](Assets/Employee_Tracker.mp4)
 
 
 
@@ -67,4 +67,4 @@ BONUS
     - deleteRole
 
 
-Here is URL of GitHub repository - 
+Here is URL of GitHub repository - https://github.com/Kaviambi/EmployeeTracker.git
