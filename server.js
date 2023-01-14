@@ -117,9 +117,9 @@ viewAllRoles = () => {
 
 viewAllEmployees = () => {
     db.query(`SELECT employee.id, employee.first_name, employee.last_name, employee_role.title, department.dept_name ,employee_role.salary, 
-    CONCAT(manager.first_name, ' ', manager.last_name) AS manager 
-    FROM employee AS manager 
-    RIGHT JOIN employee AS employee 
+    CONCAT(manager.first_name, ' ', manager.last_name) 
+    FROM employee 
+    RIGHT JOIN employee  
     ON employee.manager_id = manager.id 
     JOIN employee_role 
     ON employee.id = employee_role.id 
